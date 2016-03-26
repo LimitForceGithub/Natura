@@ -58,7 +58,7 @@ configFile.withReader {
 }
 
 dependencies {
-    compile "mantle:Mantle:${config.minecraft_version}-${config.mantle_version}:deobf"
+    deobfCompile "mantle:Mantle:${config.minecraft_version}-${config.mantle_version}"
     //compile "tconstruct:TConstruct:${config.minecraft_version}-${config.tconstruct_version}:deobf"
 
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
