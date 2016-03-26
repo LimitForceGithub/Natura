@@ -9,21 +9,21 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
         maven {
-            name = 'ForgeFS'
-            url = 'http://files.minecraftforge.net/maven'
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
         }
-	maven {
+        maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
-
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
-
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 repositories {
     maven {
@@ -45,8 +45,7 @@ repositories {
 }
 
 
-apply plugin: 'forge'
-group = 'mods.natura'
+group = 'com.progwml6.natura'
 
 // define the properties file
 ext.configFile = file "build.properties"
@@ -60,16 +59,20 @@ configFile.withReader {
 
 dependencies {
     compile "mantle:Mantle:${config.minecraft_version}-${config.mantle_version}:deobf"
-    compile "tconstruct:TConstruct:${config.minecraft_version}-${config.tconstruct_version}:deobf"
-    compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.CCLIB_version}:dev"
-    compile "codechicken:ForgeMultipart:${config.minecraft_version}-${config.FMP_version}:dev"
-    compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.ccc_version}:dev"
-    compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.NEI_version}:dev"
+	//compile "tconstruct:TConstruct:${config.minecraft_version}-${config.tconstruct_version}:deobf"
+
+	deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
+
+    //compile "codechicken:CodeChickenLib:${config.minecraft_version}-${config.CCLIB_version}:dev"
+    //compile "codechicken:ForgeMultipart:${config.minecraft_version}-${config.FMP_version}:dev"
+    //compile "codechicken:CodeChickenCore:${config.minecraft_version}-${config.ccc_version}:dev"
+    //compile "codechicken:NotEnoughItems:${config.minecraft_version}-${config.NEI_version}:dev"
 }
 
 minecraft {
-    version = config.minecraft_version + "-" + config.forge_version
-    runDir = 'run'
+    version = config.minecraft_version + "-" + config.forge_version// + "-" + config.minecraft_version
+    mappings = config.mappings
+    runDir = 'eclipse'
 }
 
 // sets version to the slimeKnights version format
@@ -91,49 +94,38 @@ task buildInfo {
 }
 version = "${minecraft.version}-${project.buildInfo.buildNum}.${project.buildInfo.revision}"
 
-sourceSets {
-    main {
-        resources {
-            srcDir 'resources'
-        }
-    }
-}
 processResources
 {
-        // replace stuff in text files, not binary ones.
+    // replace stuff in text files, not binary ones.
     from(sourceSets.main.resources.srcDirs) {
         include '**/*.info'
-		
-                // replace version and MCVersion
-      expand 'version':project.version, 'mcversion':project.minecraft.version
+        // replace version and MCVersion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-        
-        // copy everything else, thats not text
+    // copy everything else, thats not text
     from(sourceSets.main.resources.srcDirs) {
         exclude '**/*.info'
     }
 }
 
 // because the normal output has been made to be obfuscated
-task devjar(type: Jar) {
+task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'deobf'
 }
 
-task sourcesjar(type: Jar) {
+task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
     classifier = 'sources'
 }
 
 artifacts {
-    archives devjar
-    archives sourcesjar
+    archives deobfJar
+    archives sourcesJar
 }
 
 task("uploadJars", dependsOn:"reobf") {
-    
     description = "uploads JARs"
-
     if (project.hasProperty("local_maven")) {
 	    apply plugin: 'maven'
             uploadArchives {
@@ -145,5 +137,3 @@ task("uploadJars", dependsOn:"reobf") {
         }
     }
 }
-
-
