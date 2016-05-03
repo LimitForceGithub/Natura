@@ -60,7 +60,6 @@ configFile.withReader {
 dependencies {
     deobfCompile "slimeknights.mantle:Mantle:${config.minecraft_version}-${config.mantle_version}"
     deobfCompile "slimeknights:TConstruct:${config.minecraft_version}-${config.tconstruct_version}"
-    //compile "tconstruct:TConstruct:${config.minecraft_version}-${config.tconstruct_version}:deobf"
 
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
 

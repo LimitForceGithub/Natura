@@ -16,7 +16,6 @@ public class WorldClientProxy extends ClientProxy
     public void preInit()
     {
         // Entities
-        //RenderingRegistry.registerEntityRenderingHandler(EntityBlueSlime.class, RenderTinkerSlime.FACTORY_BlueSlime);
 
         super.preInit();
     }
@@ -25,8 +24,6 @@ public class WorldClientProxy extends ClientProxy
     protected void registerModels()
     {
         ModelLoader.setCustomStateMapper(NaturaWorld.overworldLeaves, (new StateMap.Builder()).ignore(BlockLeaves.CHECK_DECAY, BlockLeaves.DECAYABLE).build());
-
-        registerItemBlockMeta(NaturaWorld.cloudBlock);
 
         Item log = Item.getItemFromBlock(NaturaWorld.overworldLogs);
         for (BlockOverworldLogs.LogType type : BlockOverworldLogs.LogType.values())
@@ -39,6 +36,6 @@ public class WorldClientProxy extends ClientProxy
             ModelLoader.setCustomModelResourceLocation(log, type.meta, new ModelResourceLocation(log.getRegistryName(), variant));
         }
 
-        //ModelLoader.setCustomStateMapper(TinkerWorld.slimeGrass, (new StateMap.Builder()).ignore(BlockSlimeGrass.FOLIAGE).build());
+        registerItemBlockMeta(NaturaWorld.cloudBlock);
     }
 }
