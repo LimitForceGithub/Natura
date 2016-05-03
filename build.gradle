@@ -58,7 +58,8 @@ configFile.withReader {
 }
 
 dependencies {
-    deobfCompile "mantle:Mantle:${config.minecraft_version}-${config.mantle_version}"
+    deobfCompile "slimeknights.mantle:Mantle:${config.minecraft_version}-${config.mantle_version}"
+    deobfCompile "slimeknights:TConstruct:${config.minecraft_version}-${config.tconstruct_version}"
     //compile "tconstruct:TConstruct:${config.minecraft_version}-${config.tconstruct_version}:deobf"
 
     deobfCompile "mezz.jei:jei_${config.minecraft_version}:${config.jei_version}"
@@ -70,7 +71,7 @@ dependencies {
 }
 
 minecraft {
-    version = config.minecraft_version + "-" + config.forge_version// + "-" + config.minecraft_version
+    version = config.minecraft_version + "-" + config.forge_version + "-" + config.minecraft_version
     mappings = config.mappings
     runDir = 'eclipse'
 }
